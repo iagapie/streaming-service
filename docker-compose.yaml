@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.19-alpine
+
+  fpm:
+    image: ${DOCKER_REGISTRY:-lara-stream}/fpm:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: docker/php-fpm
+      dockerfile: Dockerfile
+
+  node:
+    image: ${DOCKER_REGISTRY:-lara-stream}/node:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
