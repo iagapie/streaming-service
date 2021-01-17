@@ -1,5 +1,9 @@
 # Streaming Service
 
+<p align="center">
+    <img src="https://github.com/iagapie/streaming-service/blob/master/client/src/assets/view.png?raw=true" alt="Screen" width="90%" height="90%" />
+</p>
+
 ## Installation
 
 ```bash
