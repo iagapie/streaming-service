@@ -1,8 +1,11 @@
 import request from './request'
 
-export default {
-    getPlaylist: () => request.get('/api/playlist'),
-    getSong: (name) => request.get('/api/song/' + name, {
+export async function getPlaylist() {
+    return await request.get('/api/playlist')
+}
+
+export async function getSong() {
+    return await request.get('/api/song/' + name, {
         responseType: 'arraybuffer'
     })
 }

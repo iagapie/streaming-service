@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="songs.length">
     <div class="container__main" :class="{'container__main--show': active >= 0}">
-      <song-list v-model:active="active" />
+      <song-list v-model:active="active"/>
     </div>
     <player
         class="container__player"
@@ -14,9 +14,6 @@
         v-model:repeat="repeat"
     />
   </div>
-  <div class="loading" v-else-if="loading">
-    <div class="loading__dot-pulse"></div>
-  </div>
   <div v-else class="no-songs">
     <div class="no-songs__text">
       NO SONGS
@@ -28,7 +25,7 @@
 </template>
 
 <script>
-import {ref, watch, nextTick, computed} from 'vue'
+import {ref, watch, nextTick, computed, reactive} from 'vue'
 import {useStore} from 'vuex'
 import SongList from '@/components/SongList'
 import Player from '@/components/Player'
@@ -40,8 +37,7 @@ export default {
     SongList,
     Player
   },
-  setup() {
-    const loading = ref(true)
+  async setup() {
     const active = ref(-1)
     const song = ref({})
     const shuffle = ref(false)
@@ -49,8 +45,6 @@ export default {
 
     const store = useStore()
     const songs = computed(() => store.state.playlist.songs)
-
-    watch(songs, () => loading.value = false)
 
     watch(active, () => song.value = active.value < 0 ? {} : songs.value[active.value])
 
@@ -107,10 +101,9 @@ export default {
       }
     }
 
-    store.dispatch('playlist/getSongs')
+    await store.dispatch('playlist/getSongs')
 
     return {
-      loading,
       active,
       songs,
       song,
@@ -176,89 +169,6 @@ export default {
     font-size: 20px;
     font-weight: 600;
     text-shadow: 0 1px 1px rgba($c-shark-dark, 0.5);
-  }
-}
-
-.loading {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &__dot-pulse {
-    position: relative;
-    left: -9999px;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    background-color: $c-green;
-    color: $c-green;
-    box-shadow: 9999px 0 0 -5px $c-green;
-    animation: dotPulse 1.5s infinite linear;
-    animation-delay: .25s;
-
-    &::before, &::after {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 10px;
-      background-color: $c-green;
-      color: $c-green;
-    }
-
-    &::before {
-      box-shadow: 9984px 0 0 -5px $c-green;
-      animation: dotPulseBefore 1.5s infinite linear;
-      animation-delay: 0s;
-    }
-
-    &::after {
-      box-shadow: 10014px 0 0 -5px $c-green;
-      animation: dotPulseAfter 1.5s infinite linear;
-      animation-delay: .5s;
-    }
-  }
-
-  @keyframes dotPulseBefore {
-    0% {
-      box-shadow: 9984px 0 0 -5px $c-green;
-    }
-    30% {
-      box-shadow: 9984px 0 0 2px $c-green;
-    }
-    60%,
-    100% {
-      box-shadow: 9984px 0 0 -5px $c-green;
-    }
-  }
-
-  @keyframes dotPulse {
-    0% {
-      box-shadow: 9999px 0 0 -5px $c-green;
-    }
-    30% {
-      box-shadow: 9999px 0 0 2px $c-green;
-    }
-    60%,
-    100% {
-      box-shadow: 9999px 0 0 -5px $c-green;
-    }
-  }
-
-  @keyframes dotPulseAfter {
-    0% {
-      box-shadow: 10014px 0 0 -5px $c-green;
-    }
-    30% {
-      box-shadow: 10014px 0 0 2px $c-green;
-    }
-    60%,
-    100% {
-      box-shadow: 10014px 0 0 -5px $c-green;
-    }
   }
 }
 </style>

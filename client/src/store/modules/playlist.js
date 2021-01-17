@@ -1,4 +1,4 @@
-import api from '@/api'
+import {getPlaylist} from '@/api'
 
 const state = {
     songs: []
@@ -14,12 +14,9 @@ const mutations = {
 
 const actions = {
     getSongs: async function({ commit }) {
-        try {
-            const response = await api.getPlaylist()
-            commit('SET_SONGS', response.data)
-        } catch (e) {
-            console.log(e)
-        }
+        const response = await getPlaylist()
+
+        commit('SET_SONGS', response.data)
     }
 }
 
