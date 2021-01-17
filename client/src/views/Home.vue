@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {ref, watch, nextTick, computed, reactive} from 'vue'
+import {ref, watch, nextTick, computed} from 'vue'
 import {useStore} from 'vuex'
 import SongList from '@/components/SongList'
 import Player from '@/components/Player'
